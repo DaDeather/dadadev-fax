@@ -1,0 +1,48 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+            cost:      12
+
+    providers:
+        db_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true
+            pattern: ^/
+
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            form_login:
+                post_only: true
+                check_path: /login
+                success_handler: App\EventListener\Handler\Authentication\LoginSuccessHandler
+                failure_handler: App\EventListener\Handler\Authentication\LoginFailureHandler
+                username_parameter: username
+                password_parameter: password
+                provider: db_user_provider
+
+            logout:
+                path: /logout
+                success_handler: App\EventListener\Handler\Authentication\LogoutSuccessHandler
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/api, roles: [IS_AUTHENTICATED_ANONYMOUSLY, ROLE_API_USER] }
+    - { path: ^/, roles: [ROLE_USER, ROLE_ADMIN] }

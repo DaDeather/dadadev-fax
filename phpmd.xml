@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="My first PHPMD rule set"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                     http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="
+                     http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        My custom rule set that checks my code...
+    </description>
+
+    <!-- Import the entire unused code rule set -->
+    <rule ref="rulesets/unusedcode.xml"/>
+    <rule ref="rulesets/controversial.xml"/>
+    <rule ref="rulesets/design.xml"/>
+
+    <rule name="BooleanArgumentFlag"
+          message="The method {0} has a boolean flag argument {1}, which is a certain sign of a Single Responsibility Principle violation."
+          class="PHPMD\Rule\CleanCode\BooleanArgumentFlag"
+          externalInfoUrl="http://phpmd.org/rules/cleancode.html#booleanargumentflag">
+        <priority>1</priority>
+        <properties/>
+    </rule>
+    <rule name="ElseExpression"
+          message="The method {0} uses an else expression. Else is never necessary and you can simplify the code to work without else."
+          class="PHPMD\Rule\CleanCode\ElseExpression"
+          externalInfoUrl="http://phpmd.org/rules/cleancode.html#elseexpression">
+        <priority>1</priority>
+        <properties/>
+    </rule>
+
+    <exclude-pattern>src/Migrations/Version</exclude-pattern>
+</ruleset>

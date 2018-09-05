@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'fax_send_success_title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>{{ 'fax_send_success_title'|trans }}</h2>
+        <p>{{ 'fax_send_success_subtitle'|trans }}</p>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">{{ 'fax_send_success_fax_information'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">{{ 'fax_id'|trans }}</th>
+                <td>{{ fax.id }}</td>
+            </tr>
+            <tr>
+                <th scope="row">{{ 'fax_twilio_id'|trans }}</th>
+                <td>{{ fax.faxId }}</td>
+            </tr>
+            <tr>
+                <th scope="row">{{ 'fax_from'|trans }}</th>
+                <td>{{ fax.fromPhoneNumber }}</td>
+            </tr>
+            <tr>
+                <th scope="row">{{ 'fax_to'|trans }}</th>
+                <td>{{ fax.toPhoneNumber }}</td>
+            </tr>
+            <tr>
+                <th scope="row">{{ 'fax_status'|trans }}</th>
+                <td>{{ fax.faxStatus }}</td>
+            </tr>
+            <tr>
+                <th scope="row">{{ 'fax_send_success_fax_created'|trans }}</th>
+                <td>{{ fax.created|date }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-success" href="{{ url('app_dashboard_dashboard') }}">{{ 'btn_back_to_dashboard'|trans }}</a>
+    </div>
+{% endblock %}

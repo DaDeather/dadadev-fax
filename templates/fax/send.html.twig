@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block title %}{{ 'fax_send_title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>
+            <small>
+                <a class="btn btn-sm btn-success" href="{{ url('app_dashboard_dashboard') }}">
+                    <i class="icon ion-md-arrow-back"></i>
+                </a>
+            </small>
+            {{ 'fax_send_title'|trans }}
+        </h2>
+        <p>{{ 'fax_send_subtitle'|trans }}</p>
+        {% for message in app.flashes('send_fax_error') %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <div class="form-group row">
+            <div class="offset-md-2 col-md-10">
+                <button type="submit" class="btn btn-success">{{ 'ok_btn'|trans }}</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

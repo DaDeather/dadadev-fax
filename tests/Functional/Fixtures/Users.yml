@@ -1,0 +1,19 @@
+App\Entity\User:
+    user_admin:
+        email (unique): 'oezguen.turan@dadadev.com'
+        password: '\$2y\$12\$c0xcgqF3A0u6heku77aDaO2DojsqQO6v3s6B8qBlPuIRMnFS7mstK' # test
+        forename: 'Ismail Özgün'
+        surname: 'Turan'
+        roles: ['@role_admin', '@role_user']
+    user_test:
+        email (unique): 'test@test.com'
+        password: '\$2y\$12\$c0xcgqF3A0u6heku77aDaO2DojsqQO6v3s6B8qBlPuIRMnFS7mstK' # test
+        forename: 'someForeName'
+        surname: 'someSurName'
+        roles: ['@role_admin', '@role_user']
+    user_{1..10}:
+        email (unique): <email()>
+        password: '\$2y\$12\$c0xcgqF3A0u6heku77aDaO2DojsqQO6v3s6B8qBlPuIRMnFS7mstK' # test
+        forename: <firstName()>
+        surname: <lastName()>
+        roles: ['@role_user']

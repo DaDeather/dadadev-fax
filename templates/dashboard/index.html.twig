@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'dashboard'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>{{ 'dashboard_title'|trans }}</h2>
+        <p class="alert alert-info">
+            <span>{{ 'dashboard_receive_fax_info'|trans }}:</span>
+            <span><a href="tel:{{ twilioPhoneNumber }}">{{ twilioPhoneNumber }}</a></span>
+        </p>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="row">
+                    <h3 class="col-xs-12 col-sm-8">
+                        {{ 'dashboard_fax_outbound_title'|trans }}
+                    </h3>
+                    <span class="pb-1 col-xs-12 col-sm-4">
+                        <a id="send-fax-link" class="float-sm-right btn btn-sm btn-success"
+                           href="{{ url('app_fax_send') }}">
+                            <i class="icon ion-md-send"></i> {{ 'send_fax'|trans }}
+                        </a>
+                    </span>
+                </div>
+                <table id="sent-faxes" class="table table-sm table-striped table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">{{ 'fax_to'|trans }}</th>
+                        <th scope="col">{{ 'fax_status'|trans }}</th>
+                        <th scope="col">{{ 'fax_updated'|trans }}</th>
+                        <th scope="col">{{ 'fax_show_media'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if sentFaxes|length > 0 %}
+                        {% for fax in sentFaxes %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ fax.toPhoneNumber }}</td>
+                                <td>{{ fax.faxStatus }}</td>
+                                <td class="datetime">{{ (fax.updated ?? fax.created)|date('c') }}</td>
+                                <td>
+                                    <a class="btn btn-success" target="_blank"
+                                       href="{{ url('app_fax_getmediafile', {'id': fax.id}) }}">
+                                        <i class="icon ion-md-open"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">{{ 'dashboard_no_fax_sent_yet'|trans }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="row">
+                    <h3 class="col-xs-12 col-sm-8 col-sm-push-4">
+                        {{ 'dashboard_fax_inbound_title'|trans }}
+                    </h3>
+                </div>
+                <table id="received-faxes" class="table table-sm table-striped table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">{{ 'fax_from'|trans }}</th>
+                        <th scope="col">{{ 'fax_status'|trans }}</th>
+                        <th scope="col">{{ 'fax_updated'|trans }}</th>
+                        <th scope="col">{{ 'fax_show_media'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if receivedFaxes|length > 0 %}
+                        {% for fax in receivedFaxes %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ fax.fromPhoneNumber }}</td>
+                                <td>{{ fax.faxStatus }}</td>
+                                <td class="datetime">{{ (fax.updated ?? fax.created)|date('c') }}</td>
+                                <td>
+                                    {% if fax.localFilePath is null and fax.faxStatus not in FINISHED_RECEIVE_FAILED_STATE_COLLECTION %}
+                                        <span title="{{ 'fax_file_is_being_received'|trans }}"
+                                              class="btn btn-success"><i class="fa fa-spinner fa-spin"></i></span>
+                                    {% elseif fax.faxStatus not in FINISHED_RECEIVE_FAILED_STATE_COLLECTION %}
+                                        <a class="btn btn-success" target="_blank"
+                                           href="{{ url('app_fax_getmediafile', {'id': fax.id}) }}">
+                                            <i class="icon ion-md-open"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">{{ 'dashboard_no_fax_received_yet'|trans }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type='text/javascript'>
+        var URL_API_JSON_RECEIVED_FAXES = '{{ url('app_api_jsondata_receivedfaxes') }}';
+        var URL_API_JSON_SENT_FAXES = '{{ url('app_api_jsondata_sentfaxes') }}';
+        var TRANS_FAX_IS_BEING_RECEIVED = '{{ 'fax_file_is_being_received'|trans }}';
+        var FAX_FINISHED_RECEIVE_FAILED_STATE_COLLECTION = '{{ FINISHED_RECEIVE_FAILED_STATE_COLLECTION|join(',') }}'.split(',');
+    </script>
+    <script type='text/javascript' src='/app.js'></script>
+{% endblock %}

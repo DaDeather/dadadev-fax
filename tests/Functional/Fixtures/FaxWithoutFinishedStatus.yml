@@ -1,0 +1,5 @@
+App\Entity\Fax:
+    fax_without_local_file_{1..20}:
+        faxDirection: '<randomElement(["inbound","outbound"])>'
+        faxId: '<regexify("[0-9a-zA-Z]{34}")>'
+        faxStatus: '<randomElement(["queued","processing","sending","receiving"])>'

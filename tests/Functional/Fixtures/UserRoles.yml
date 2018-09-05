@@ -1,0 +1,7 @@
+App\Entity\UserRole:
+    role_admin:
+        code: 'ROLE_ADMIN'
+        name: 'ROLE_ADMIN'
+    role_user:
+        code: 'ROLE_USER'
+        name: 'ROLE_USER'

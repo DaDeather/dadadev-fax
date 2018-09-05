@@ -1,0 +1,5 @@
+App\Entity\Fax:
+    fax_{1..10}:
+        faxDirection: '<randomElement(["inbound","outbound"])>'
+        faxId: '<regexify("[0-9a-zA-Z]{34}")>'
+        localFilePath: 'someFile.pdf'
